@@ -1,0 +1,8 @@
+
+data <- data.frame(edad = c(24, 60, 15, 31, 56, 70, 23, 44),
+                   sexo = c(1, 0, 0, 1, 0, 0, 1, 1),
+                   nivel_educacional = c("Básica", "Universitaria", "Media", "Posgrado", "Posgrado", "Básica", "Media", "Posgrado"))
+
+library(openxlsx)
+write.xlsx(data, "datos.xlsx")
+
