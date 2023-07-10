@@ -189,6 +189,9 @@ is.numeric(caracter)
 
 ## 6.1. Vectores -----------------------------------------------------------
 
+## ~~~~ Definición ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Arreglo unidimensional con un solo tipo de dato.
+
 ## Con la función c(), podemos elaborar un vector a mano
 
 ## vector 1: numético
@@ -291,6 +294,7 @@ vector_2 <- 1:3
 
 ## 6.2. Matrices -------------------------------------------------------------
 
+## ~~~~ Definición ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Conjunto de datos ordenados en dos dimensiones. Solo un tipo de dato.
 
 # Método 1: Reorganización de un vector con la función matrix:

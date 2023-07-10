@@ -379,6 +379,7 @@ det(A)
 t(A)
 A + B
 A %*% B
+A %*% x
 solve(A)
 
 ## Ejercicios: -------------------------------------------------------------
@@ -400,7 +401,7 @@ X <- matrix(x)
 t(X) %*% X
 sum(x**2)
 
-## 4) Calcule correlación, XtXn^(-1)
+## 5) Calcule correlación, XtXn^(-1)
 x1 <- rnorm(100, mean = 4, sd = 1.2)
 x2 <- rnorm(100, mean = 5, sd = 1.5)
 
@@ -428,6 +429,7 @@ lm(dist ~ speed, data = cars)
 
 ## 6.3. DataFrames ---------------------------------------------------------
 
+## ~~~~ Definición ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ##* Definición: Es lo que R reconoce como Base de Datos. Es un marco de datos relacional
 ##* que tiene un conjunto de variables.
 
