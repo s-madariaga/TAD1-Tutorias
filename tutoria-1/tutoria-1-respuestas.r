@@ -4,18 +4,32 @@
 ########################################################.
 
 
-# Recomiendo esta configuración inicial en sus scripts:
-rm(list = ls()) # Borrar objetos de la memoria
-options(scipen = 999) # Eliminar notación científica
+# Cofiguraciones iniciales: Recomiendo esta configuración inicial en sus scripts:
+rm(list = ls())
+options(scipen = 999)
+
+# Luego de la configuración, poner las librerías
+library(dplyr) # filter, select, mutate, rename, gruop_by, summarise ..
+library(tidyr) # tibble, gather, spread ...
+library(readxl) # read_excel
+library(WDI) # Acceso facilitado a la World Bank API
 
 
 ## Introducción al manejo básico de R:
 
 ## -------------- COMENTARIOS
 # Este es un comentario
+# ESte es otro comentario
+
+# Importación de la base de datos
 
 #* Este es un comentario con *, +, >: comentarios continuos
 #* (Continuación)
+
+
+# 1. Título 1 -------------------------------------------------------------
+
+## 1.1. Subtítulo 1 --------------------------------------------------------
 
 # Ctrl + Shift + R para generar "headers" ----------------------------------
 
@@ -27,10 +41,12 @@ options(scipen = 999) # Eliminar notación científica
 print("Primer evento")
 print("Segundo evento")
 
+
 # También, puedo ejecutar dos líneas al mismo tiempo, usando ";"
 print("Primer evento"); print("Segundo evento")
 
-## Es cuestión de gustos. Lo común es hacer lo primero, ya que es más amable a la vista.
+
+## Es cuestión de gustos. Lo común es evitar los ";", ya que es más amable a la vista.
 
 
 ## -------------- EJECUTAR INSTRUCCIONES DESDE EL SCRIPT
@@ -44,14 +60,25 @@ sum(c(1, 2, 3)) # ¿qué pasa si solo marco el c(1, 2, 3)?
 ## Otro apunte importante: la ayudante usa mucho el pipe operator.
 ## COn el pipe operator, estas dos sintaxis son equivalentes:
 
-filter(iris, Species == "setosa")
+library(dplyr)
 iris %>% filter(Species == "setosa")
+filter(iris, Species == "setosa")
+
+# Limpiar la consola
+## ctrl + l
 
 # 1. Fijar el directorio --------------------------------------------------
 
-##* Para tener un directorio de referencia en R debes fijar el directorio.
+## Para tener un directorio de referencia en R, debes fijar el directorio con setwd()
 
-getwd() # La carpeta de proyecto es mi raíz
+## getwd() Ver el directorio actual
+getwd()
+
+## setwd() Fijar un directorio
+
+# setwd("../") EN windows, por algún motivo, se copian los slashs al revés "\"
+
+data <- read_excel("Carpeta 1/datos.xlsx")
 
 # Pero, ¿qué pasa cuando no estoy en un proyecto?
 
@@ -59,44 +86,34 @@ getwd() # La carpeta de proyecto es mi raíz
 
 # Constantes
 pi
-exp(1)
+exp(2)
 
 # Con el signo <- asignamos un valor o estructura a un objeto
+
 ## Ejercicio: Calcule el área de un círculo de radio 2. Considere A = r*pi^2
-radio <- 2
-radio*pi**2
-
-## Sobre el nombre de los objetos:
-
-##* No puede empezar con un número.
-##* No puede tener espacios entre medio.
-##* Evitar los carácteres extraños como tildes y ñ.
-##* Estilos:
-##* - snake_case
-##* - camelCase
-##* - PascalCase
-
+radio <- 3
+area_circulos <- pi*radio**2
 
 # Guardar objeto
-area_circulo <- radio*pi**2
+area_circulos <- pi*radio**2
 
 # Guardar y ejecutar la mismo tiempo
-(area_circulo <- radio*pi**2)
-
+(area_circulos <- pi*radio**2)
 
 # 3. Funciones ---------------------------------------------------------------
 
 ## A estos objetos podemos aplicar funciones.
 
 ## 3.1. Ejemplos de funciones en R -----------------------------------------
+
 vector <- c(1, 2, 3, 5)
+
 
 length(vector)
 sum(vector)
 mean(vector)
 sd(vector)
 table(c(c(0, 0, 0), c(1, 1)))
-
 
 ## 3.2. Documentación ------------------------------------------------------
 
@@ -116,10 +133,7 @@ example(mean)
 ##* - Luego, para cargarlo, usas lafunción "library"
 ##* install.packages debes usarlo una vez, library debes usarlo cada vez que uses esa función
 
-library(dplyr) # filter, select, mutate, rename, gruop_by, summarise ..
-library(tidyr) # tibble, gather, spread ...
-library(readxl) # read_excel
-library(WDI) # Acceso facilitado a la World Bank API
+# Ver inicio del script
 
 # 4. Operaciones ----------------------------------------------------------
 
@@ -132,7 +146,13 @@ a + b  ## R como calculadora
 a - b
 a / b
 a*b
-a**2
+b^2
+b**2
+sqrt(b)
+b**.5
+
+0.5
+.5
 
 # Paréntesis
 (a + b) / b
@@ -147,13 +167,16 @@ a > b
 a == b
 a != b
 
-# Álgebra de eventos
+# Álgebra de eventos: cómo puedo unir dos eventos
 c <- a > b
 d <- a != b
 
-c|d
-c&d
 
+c|d # | Unión, o
+c&d # Intersección, y
+
+# Aplicación real
+iris %>% filter(Species == "setosa" & Sepal.Length > 4.5)
 
 # 5. Tipo de datos --------------------------------------------------------
 
@@ -171,8 +194,20 @@ no_existe <- NULL
 class(caracter)
 
 # Confirmar clase
+
+## Preguntar ¿caracter, es de clase character?
 is.character(caracter)
+
+## Preguntar: ¿caracter, es de clase numeric?
 is.numeric(caracter)
+
+# is.na()
+data <- data.frame(
+  nambre = c("Pedro", "Rodrigo", "Pedro", "Pedro", "Pedro"),
+  x = c(1, 2, 3, 4, NA)
+)
+
+data %>% filter(is.na(data$x))
 
 ## 5.2. Transformación y coerción ------------------------------------------
 
@@ -228,7 +263,7 @@ vector_4 <- c(1, 2, 3, "Hola")
 vector_4
 class(vector_4)
 
-## Esto se conoce como cohersión
+## Esto se conoce como coerción
 
 
 ### *Coerción: ejemplos con vectores -----------------------------------------
@@ -436,6 +471,7 @@ lm(dist ~ speed, data = cars)
 
 ### 6.3.1. Generación manual ------------------------------------------------
 
+# Podemos generar manualmente, con la función data.frame
 data <- data.frame(edad = c(24, 60, 15, 31, 56, 70, 23, 44),
                    sexo = c(1, 0, 0, 1, 0, 0, 1, 1),
                    nivel_educacional = c("Básica", "Universitaria", 
@@ -443,7 +479,16 @@ data <- data.frame(edad = c(24, 60, 15, 31, 56, 70, 23, 44),
                                          "Básica", "Media", "Posgrado"))
 
 ## Observación interesante: las variables son, estructuralmente hablando, vectores.
-data$edad
+data$edad + data$sexo
+
+# Pipe operatos: operaciones en cadena (cambiar de posición)
+data %>% 
+  select(edad, nivel_educacional) %>% 
+  group_by(sexo) %>% 
+  summarise(promedio = mean(edad))
+
+# Seleccionar dos variables al mismo tiempo
+select(data, edad, sexo)
 
 ### 6.3.2. Importación de la base de datos ----------------------------------
 
@@ -453,6 +498,10 @@ library(readxl)
 data <- read_excel("datos.xlsx") # una pequeña base de datos :)
 
 ## Ver en files > hacer click en la data
+library(readr)
+datos <- read_csv("EvolutionPopUSA_MainData.csv")
+datos = read_csv("EvolutionPopUSA_MainData.csv")
+
 
 ## 6.3.3. Exploración y manipulación ------------------------------------------------------
 
@@ -460,80 +509,100 @@ data <- read_excel("datos.xlsx") # una pequeña base de datos :)
 head(data)
 tail(data)
 
-dim(data) # Las filas y columnas tienen interpretación
-nrow(data)
-ncol(data)
+# Dimensionalidad
+dim(data)
 
-# Observar contenidos
+## ¿Cuántas observaciones tiene?
+## Respuesta: 8
+
+## ¿Cuántas variables tiene?
+## Respuesta: 3
+
+# Observar contenido
+## Con str: ver la info de las variables
 str(data)
+
+## Ver los nombres de las variables
 names(data)
 
+## Se crean objetos con las variables
+attach(data)
+
+
 ## Seleccione las dos primeras variables
-data[, c(1,2)]
-data %>% select(1,2)
+data[ ,c(1, 2)]
+data$edad
+data %>% select(1:3)
 
 ## Seleccione la variable edad
-data[, 1]
 data$edad
+data %>% select(edad)
+data[,1]
 
 ## Elimine la variable edad
-data[, -1]
-data %>% select(-1)
-data %>% select(-edad)
+data <- data %>% select(-c(edad, nivel_educacional))
+
 
 # Añadir variable
-data$nacimiento # Todavía no existe
-data$nacimiento <- 2023 - data$edad
-data
 
-# Con mutate
-data %>% mutate(nacimiento_2 = 2023 - edad)
+## Ejemplo: añada una vairable llamada "año de nacimiento"
+data$agno_nacimiento <- 2023 - data$edad
+
+head(data)
+
+# ¿y con mutate?
+data <- data %>% mutate(agno_nacimiento_2 = 2023 - edad)
+
+## Para guardar la transformación, deben reescribir el objeto o crear otro (decisión personal)
 
 # Cuidado con los NAs
+
+## Ejemplo: vea lo que sucede con esta variable que tiene un NA
 data$dummy_variable <- c(rep(1,7), NA)
 
-mean(data$dummy_variable)
-mean(data$dummy_variable, na.rm = TRUE)
+data
 
+mean(data$dummy_variable, na.rm = TRUE)
 
 # Manipulación de datos con dplyr ------------------------------------------------
 
-## Filter
-data %>% filter(nivel_educacional == "Básica")
-
-## Group by y summarise, dos funciones comunes
+## Filtrar la data por nivel educacional de básica
 data %>% 
-  mutate(sexo = ifelse(sexo == 1, "Hombre", "Mujer")) %>% 
+  filter(nivel_educacional == "Básica")
+
+## Group by y summarise, dos funciones comunes. Agrupar por sexo y calcula el promedio de edad 
+tabla <- data %>% 
   group_by(sexo) %>% 
-  summarise(promedio = mean(edad, na.rm = TRUE))
+  summarise(mean = mean(edad))
+
+tabla
+
 
 ## Renombrar variables
-data %>% 
-  rename("sexo_asignado" = "sexo")
+
+## Ejemplo: Renombre la variable "sexo" como "sexo_asignado"
+data %>% rename(sexo_asignado = sexo)
 
 ## Importante: si quieres aplicar estos cambios a tu data, debes reescribir el objeto
-
 
 # 7. APIs -----------------------------------------------------------------
 
 ## Trabajaremos con el paquete de R que consulta la API del Banco Mundial
+
 library(WDI)
 
 ## Documentación: https://github.com/vincentarelbundock/WDI
 
 ## 7.1. Hacer la consulta --------------------------------------------------
 
-## El paquete WDI consulta la API del Banco Mundial, en función de:
-##* - Identificador del índicador (obligatorio)
-##* - Otras especificaciones opcionales: periodo, cache, datos extra, etc.
-
 ## Cómo obtener el ID del indicador:
-##* - Usar la función WDIsearch
-##* - Portal de indicadores del Banco Mundial: https://data.worldbank.org/indicator (RECOMENDADA)
+
+## 1) Usar la función WDIsearch
 
 WDIsearch(string = "Life expectancy")
 
-## Ok, pero mejor ir a la página oficial y sacar de ahí el ID
+## 2) Portal de indicadores del Banco Mundial: https://data.worldbank.org/indicator
+
 
 
 ## 7.2. Extracción de los datos por medio de la consulta -------------------
@@ -556,12 +625,13 @@ head(data_life_expectancy)
 table(data_life_expectancy$year)
 
 
-## Filtramos por américa latina y el caribe
+## Filtramos por américa latina y el caribe ("Latin America & Caribbean")
 data_life_expectancy <- data_life_expectancy %>% 
   filter(region=="Latin America & Caribbean")
 
 ## Observemos nuevamente:
 head(data_life_expectancy)
+
 
 ## Renombramos: algunos ajustes adicionales
 data_life_expectancy <- data_life_expectancy %>% 
@@ -571,7 +641,7 @@ data_life_expectancy <- data_life_expectancy %>%
 
 data_life_expectancy %>% 
   group_by(region, year) %>% 
-  summarise(promedio = mean(life_exp, na.rm = TRUE)) # Omitir los NA's, siempre
+  summarise(promedio = mean(life_exp)) # ¿por qué solo hay NA`s?
 
 ## Recuerden que las funciones de estadísticos descriptivos son:
 ##* Centro: mean, median
