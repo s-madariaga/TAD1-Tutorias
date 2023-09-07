@@ -32,7 +32,7 @@ mi_plot <- iris %>%
 
 
 # Guardamos todo en un archvio ".RData"
-save(colores, mi_modelo, mi_plot, number, file = "input/objetos.RData")
+save(colores, mi_modelo, mi_plot, number, file = "objetos_2.RData")
 
 
 
